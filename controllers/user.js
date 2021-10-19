@@ -6,6 +6,7 @@ const User = require ('../models/User');//Modele de base de donnée
 // logique des routes d inscription et de connexion utilsateurs
 
 exports.signup = (req, res, next) => {
+//fonction de test du password 
 
     //achage (cryptage)
     bcrypt.hash(req.body.password, 10)
@@ -15,10 +16,11 @@ exports.signup = (req, res, next) => {
           email:req.body.email,
           password: hash
         });
+        console.log(req.body.password)
         user.save()
         //save pour enregistrer l'utilisateur dans la base de donnée
           .then(() => res.status(201).json({ message: 'Utilisateur créé avec succès !' }))
-          .catch(error => res.status(400).json({  message: 'Utilisateur non créé ! ' + error }));
+          .catch(error => res.status(400).json({  message: 'Utilisateur non créé, utilisez un autre e-mail !' +error}));
       })
       .catch(error => res.status(500).json({ message: 'Utilisateur non créé ! ' + error }));
   };

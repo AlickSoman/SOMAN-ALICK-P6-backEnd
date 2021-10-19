@@ -9,10 +9,10 @@ const sauceSchema = mongoose.Schema({
     mainPepper: {type: String, required: true}, // poivre principale
     imageUrl: {type: String, required: true}, 
     heat: {type: Number, required: true}, //note de 1 à 10 décrivant la sauce
-    likes: { type: Number, required: false},
-    dislikes: { type: Number, required: false},
-    usersLiked: { type: [String], required: false },
-    usersDisLiked: { type: [String], required: false }
+    likes: { type: Number, required: true},
+    dislikes: { type: Number, required: true},
+    usersLiked: { type: [String], required: true },
+    usersDisliked: { type: [String], required: true }
 });
 
 //exportation du module pour pouvoir y acceder depuis les autre fichiers du projet 

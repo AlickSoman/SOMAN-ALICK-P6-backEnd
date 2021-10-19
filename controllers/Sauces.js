@@ -1,7 +1,8 @@
 //importation du model Sauce
-const Sauce = require('../models/Sauce');
+
+const Sauce = require('../models/Sauces');
 const fs = require('fs');//file systeme
-const { json } = require("body-parser");
+const bodyParser = require("body-parser");
 
 
 // logique des sauces sur les differentes routes
@@ -23,13 +24,6 @@ exports.createSauce = (req, res, next) => {
     .catch(error => res.status(400).json({ message: 'Objet non enregistré !' +  error }));
     console.log("--->controllers sauce.js CONTENU: createSauce");
   console.log(req.body.createSauce)
-};
-
-// argument pour afficher toutes les sauce
-exports.getAllSauce = (req, res, next) => {
-  Sauce.find()
-    .then((sauces) => res.status(200).json(sauce))
-    .catch((error) => res.status(400).json({ error }));
 };
 
 // argument pour avoir la sauce par son id
@@ -67,6 +61,16 @@ exports.deleteSauce = (req, res, next) => {
     })
     .catch(error => res.status(500).json({ message: "impossible de supprimer la sauce " + error}));
 
+};
+
+// argument pour afficher toutes les sauce
+exports.getAllSauce = (req, res, next) => {
+  Sauce.find()
+    .then((sauces) => res.status(200).json(sauces))
+    
+    .catch((error) => res.status(400).json({ message : "impossible d'affichées les sauces "+error }));
+    console.log("--->controllers sauce.js CONTENU: getAllSauce");
+    console.log(res.status(400))
 };
 
   // =========================Like ou dislikes========================
