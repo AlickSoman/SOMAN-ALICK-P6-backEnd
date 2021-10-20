@@ -40,7 +40,7 @@ app.use(helmet()); // methode helmet pour securiser les header http
 
 app.use(
   cookieSession({
-    name: "session", secret: "s3CuR3T3",
+    name: "session", secret: (`${process.env.COOKIE_SESSION}`),
     cookie: { secure: true, httpOnly: true, domain: "http://localhost:3000/",},
   }));
 

@@ -4,7 +4,8 @@ const mongoose = require("mongoose");
 require("dotenv").config();
 mongoose.connect(
   //lien de connection à la basse de donnée
-     process.env.DB_LOG,
+  (`${process.env.DB_LOG}`),
+    //  process.env.DB_LOG,
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => console.log("Connexion à MongoDB réussie !!"))

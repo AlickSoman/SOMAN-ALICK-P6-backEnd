@@ -1,13 +1,12 @@
 //Variables
 const bcrypt = require('bcrypt');// pour le hash du mot de passe
 const jwt = require('jsonwebtoken');// le token d'authentification
+const password = require('../middleware/password');
 const User = require ('../models/User');//Modele de base de donnée
-
 // logique des routes d inscription et de connexion utilsateurs
 
 exports.signup = (req, res, next) => {
 //fonction de test du password 
-
     //achage (cryptage)
     bcrypt.hash(req.body.password, 10)
 
@@ -20,7 +19,7 @@ exports.signup = (req, res, next) => {
         user.save()
         //save pour enregistrer l'utilisateur dans la base de donnée
           .then(() => res.status(201).json({ message: 'Utilisateur créé avec succès !' }))
-          .catch(error => res.status(400).json({  message: 'Utilisateur non créé, utilisez un autre e-mail !' +error}));
+          .catch(error => res.status(400).json({  message: 'Cet e-mail et déjà enregistré, veillez utilisez une autre e-mail !'}));
       })
       .catch(error => res.status(500).json({ message: 'Utilisateur non créé ! ' + error }));
   };
@@ -28,7 +27,6 @@ exports.signup = (req, res, next) => {
 //fonction login pour controller la connexion des utilisateur
 exports.login = (req, res, next) => {
 
-  // const emailCryptoJs =  cryptojs.HmacSHA512(req.body.email, `${process.env.CRYPTOJS_RANDOM_SECRET_KEY}`).toString();
   console.log("--->controllers user.js CONTENU: req.body.email");
   console.log(req.body.email)
 
@@ -36,13 +34,13 @@ exports.login = (req, res, next) => {
     //récupération de l'utilisateur
       .then(user => {
         if (!user) {
-          return res.status(401).json({ error: 'Utilisateur non trouvé !'});
+          return res.status(401).json({ message: 'Utilisateur non trouvé !'});
         }
         //controlle du mot de passe par 'compare'
         bcrypt.compare(req.body.password, user.password)
           .then(valid => {
             if (!valid) {//si le mot de passe ne corespond pas renvoyer 401
-              return res.status(401).json({ error: 'Votre mot de passe incorrect !' });
+              return res.status(401).json({ message: 'Votre mot de passe incorrect !' });
             }
             //renvoyer 200 si le comparéson à réussi
             res.status(200).json({
@@ -50,7 +48,7 @@ exports.login = (req, res, next) => {
               //token générer par le back avec jasonwebtoken
               token: jwt.sign(//"3 Arguments
                 { userId: user._id }, //1 l'id de l'user
-                'RANDOM_TOKEN_SECRET', //2 un token chriffrer
+                (`${process.env.JWT_DECODEDTOKEN}`), //2 un token chriffrer
                 { expiresIn: '24h' }//delais de validité de la session(du token)
               )
             });
