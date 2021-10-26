@@ -7,11 +7,12 @@ const mongooss = require("./db/db");
 const cookieSession = require("cookie-session");
 const helmet = require("helmet");
 const xssClean = require("xss-clean");
+const mongoSanitize = require("express-mongo-sanitize");
 // module npm  independance qui charge les variables d environnement
 
 // variables modules path et inspector npm
 const path = require("path");
-const { Session } = require("inspector");
+//const { Session } = require("inspector");
 const nocache = require("nocache"); // desactivation de la mise en cache coté client
 const app = express(); // appel  d'express dans applicaion
 //appel CORS
@@ -36,26 +37,27 @@ app.use(bodyParser.json());
 
 app.use(helmet()); // methode helmet pour securiser les header http
 
-// securiser la session avec httponly et change de nom session par defaut
+//protection injection sql
+app.use( mongoSanitize({replaceWith: "_",}));
 
-app.use(
-  cookieSession({
+// securiser la session avec httponly et change de nom session par defaut
+app.use(cookieSession({
     name: "session", secret: (`${process.env.COOKIE_SESSION}`),
-    cookie: { secure: true, httpOnly: true, domain: "http://localhost:3000/",},
+    cookie: { secure: true, httpOnly: true, domain: process.env.DOMAIN_PORT,},
   }));
 
-// appel de fonction desactive cache
+// appel de fonction desactive cache coté client
 app.use(nocache());
 
 // desactive x-powered-by activer par defaut les attaquants peuvent utilser cette entete et lancer une attaque
-
 app.disable("x-powered-by");
 
 // cross scripting protection (helmet)
 app.use((req, res, next) =>{
   res.header("X-XSS-Protection", "1; mode=block");
   next();
-})
+});
+
 //methode faille xss-clean pour nettoyer
 // les entrées utilisateur provenant du corps POST, des requêtes GET et des paramètres d'URL
 app.use(xssClean());
@@ -63,9 +65,9 @@ app.use(xssClean());
 // variables de stockage des routes
 const saucesRoutes = require("./routes/Sauces");
 const userRoutes = require("./routes/user");
+
 // gere les images dans le fichier image qui est statique
 app.use("/images", express.static(path.join(__dirname, "images")));
-
 app.use("/api/sauces", saucesRoutes);
 app.use("/api/auth", userRoutes);
 // console.log(saucesRoutes)

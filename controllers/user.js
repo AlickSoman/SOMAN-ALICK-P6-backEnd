@@ -26,7 +26,6 @@ exports.signup = (req, res, next) => {
 
 //fonction login pour controller la connexion des utilisateur
 exports.login = (req, res, next) => {
-
   console.log("--->controllers user.js CONTENU: req.body.email");
   console.log(req.body.email)
 
