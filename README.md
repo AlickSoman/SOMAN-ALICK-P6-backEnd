@@ -41,6 +41,8 @@ mesures de securité mise en place :
 
 Installation:
 
+>>>IMPORTANT : dans le backend ajouter un dossier nommé exactement comme suit ( images ), il sert à l'enregistrement des images des sauces >>>N'OUBLIEZ PAS DE LE RAJOUTER AU PROJET<<<
+
 Installez le backend de l'application lancer node server ou nodemon server après avoir installé NodeJs et les packages npm...
 
 Puis exécuter le front-end qui est réalisé en projet CLI Angular exécuter npm start après avoir installé toutes les dépendances d'Angular.
