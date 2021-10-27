@@ -1,9 +1,7 @@
 //importation du model Sauce
-
 const Sauce = require('../models/Sauces');
 const fs = require('fs');//file systeme
 const bodyParser = require("body-parser");
-
 
 // logique des sauces sur les differentes routes
 //exportation de la fonction createSauce

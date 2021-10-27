@@ -16,5 +16,4 @@ passwordSchema
 console.log("--->Ici le CONTENU de passwordSchema");
 console.log(passwordSchema);
 
-
 module.exports = passwordSchema;

@@ -3,7 +3,8 @@ const cors = require('cors');
 const express = require("express");
 const bodyParser = require("body-parser");
 //importation mongoose (pour la connection à la bdd)
-const mongooss = require("./db/db"); 
+const mongooss = require("./db/db");
+
 const cookieSession = require("cookie-session");
 const helmet = require("helmet");
 const xssClean = require("xss-clean");
@@ -49,7 +50,7 @@ app.use(cookieSession({
 // appel de fonction desactive cache coté client
 app.use(nocache());
 
-// desactive x-powered-by activer par defaut les attaquants peuvent utilser cette entete et lancer une attaque
+// desactive x-powered-by activer par defaut les attaquants peuvent utiliser cette entete et lancer une attaque
 app.disable("x-powered-by");
 
 // cross scripting protection (helmet)
